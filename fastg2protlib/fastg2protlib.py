@@ -305,7 +305,7 @@ def write_peptide_fasta(db, fasta_name="peptide.fasta"):
 
 
 def peptides_for_fastg(
-    fastg_filename,
+    fastg_filename=None,
     cleavage="trypsin",
     min_protein_length=166,
     min_peptide_length=10,
@@ -349,6 +349,10 @@ def peptides_for_fastg(
 
     """
     # endregion
+
+    if not fastg_filename:
+        print("A FASTG file path is mandatory.")
+        exit(0)
 
     logger.info(f"FASTG file: {fastg_filename}")
     logger.info(f"Protein len: {min_protein_length}")
