@@ -146,18 +146,15 @@ def _write_protein_scores(p_scores):
 def _write_fasta(p_scores):
     with open("protein.fasta", "w") as f:
         for ps in p_scores:
-            s = f"SELECT sequence, start, stop, strand FROM protein WHERE id = {ps.protein_id}"
+            s = f"SELECT sequence FROM protein WHERE id = {ps.protein_id}"
             rs = _query_db(s)
             results = rs.fetchone()
             sequence = results[0]
-            start_offset = results[1]
-            stop_offset = results[2]
-            strand_id = results[3]
             rs = _query_db(
                 f"SELECT walk FROM walk WHERE id IN (SELECT walk_id FROM protein_to_walk WHERE protein_id = {ps.protein_id})"
             )
             f.write(
-                f">Protein_{ps.protein_id}|{rs.fetchone()[0]}_start:{start_offset}_stop:{stop_offset}_strand:{strand_id}"
+                f">Protein_{ps.protein_id}|{rs.fetchone()[0]}"
             )
             f.write(os.linesep)
             f.write(f"{sequence}")
